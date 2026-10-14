@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Naija Life: City of Dreams</title>
 
 <style>
@@ -27,37 +25,63 @@ body {
 
 #hud {
   position: fixed;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   z-index: 5;
+  padding: 10px;
   color: white;
-  background: rgba(0,0,0,0.65);
-  padding: 10px 13px;
-  border-radius: 12px;
-  font-size: 13px;
+  background: #17202bd9;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+button {
+  cursor: pointer;
+  touch-action: none;
+  font-weight: bold;
+}
+
+#cameraButton,
+#vehicleButton,
+#saveButton {
+  position: fixed;
+  right: 10px;
+  z-index: 8;
+  padding: 11px;
+  border: 2px solid white;
+  border-radius: 10px;
+  font-size: 12px;
 }
 
 #cameraButton {
-  position: fixed;
-  right: 12px;
-  top: 12px;
-  z-index: 5;
-  border: 0;
-  border-radius: 10px;
-  padding: 12px;
-  background: #ffcf33;
-  font-weight: bold;
+  top: 10px;
+  background: #ffca28;
+}
+
+#vehicleButton {
+  top: 58px;
+  background: #22a75a;
+  color: white;
+}
+
+#saveButton {
+  top: 106px;
+  background: #2678e8;
+  color: white;
 }
 
 #message {
   position: fixed;
+  top: 155px;
   left: 50%;
-  top: 75px;
   transform: translateX(-50%);
   z-index: 5;
-  color: white;
-  background: rgba(0,0,0,0.65);
+  width: max-content;
+  max-width: 80%;
   padding: 8px 12px;
+  background: #17202bd9;
+  color: white;
   border-radius: 10px;
   text-align: center;
   font-size: 12px;
@@ -65,13 +89,13 @@ body {
 
 #joystick {
   position: fixed;
-  bottom: 22px;
-  left: 22px;
+  left: 20px;
+  bottom: 20px;
   width: 125px;
   height: 125px;
+  border: 3px solid #ffffffbd;
   border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  border: 3px solid rgba(255,255,255,0.7);
+  background: #ffffff40;
   z-index: 10;
   touch-action: none;
 }
@@ -80,53 +104,49 @@ body {
   position: absolute;
   width: 48px;
   height: 48px;
-  left: 35px;
   top: 35px;
-  border-radius: 50%;
-  background: #ffcf33;
+  left: 35px;
   border: 3px solid white;
-  box-shadow: 0 2px 8px #333;
+  border-radius: 50%;
+  background: #ffca28;
+  box-shadow: 0 2px 6px #333;
 }
 
 #actions {
   position: fixed;
-  bottom: 30px;
-  right: 20px;
+  bottom: 25px;
+  right: 15px;
   z-index: 10;
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 10px;
 }
 
-.actionButton {
-  width: 66px;
-  height: 66px;
-  border-radius: 50%;
+.action {
+  width: 65px;
+  height: 65px;
   border: 3px solid white;
-  background: #e94b3c;
+  border-radius: 50%;
   color: white;
-  font-weight: bold;
+  background: #df4036;
   font-size: 12px;
-  touch-action: none;
 }
 
 #loading {
   position: fixed;
   inset: 0;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 24px;
   background: #87ceeb;
-  color: #222;
-  z-index: 20;
-  font-size: 18px;
+  color: #17202b;
+  padding: 20px;
 }
 
 @media (orientation: portrait) {
-  #message::after {
-    content: " Rotate your phone sideways for the best view!";
+  #message {
+    top: 175px;
   }
 }
 </style>
@@ -139,53 +159,53 @@ body {
 <div id="loading">
   <div>
     <h2>🇳🇬 Naija Life</h2>
-    <p>Loading your city...</p>
-    <small>Please keep your internet connection on.</small>
+    <p>Building your city...</p>
+    <p>Please wait and keep your internet on.</p>
   </div>
 </div>
 
 <div id="hud">
-  <strong>🇳🇬 NAIJA LIFE</strong><br>
+  <b>🇳🇬 NAIJA LIFE</b><br>
   City of Dreams<br>
   Cash: ₦5,000<br>
-  <span id="status">Exploring the city</span>
-</div>
-
-<div id="message">
-  Explore your neighborhood!
+  <span id="status">Exploring</span>
 </div>
 
 <button id="cameraButton">📷 CHANGE VIEW</button>
+<button id="vehicleButton">🚗 ENTER VEHICLE</button>
+<button id="saveButton">💾 SAVE</button>
+
+<div id="message">Welcome to your city!</div>
 
 <div id="joystick">
   <div id="stick"></div>
 </div>
 
 <div id="actions">
-  <button class="actionButton" id="runButton">
-    RUN
-  </button>
-  <button class="actionButton" id="jumpButton">
-    JUMP
-  </button>
+  <button class="action" id="runButton">RUN</button>
+  <button class="action" id="jumpButton">JUMP</button>
 </div>
 
 <script type="module">
 import * as THREE from
 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
+// ======================================
+// 1. SETUP
+// ======================================
+
 const container = document.getElementById('game');
 const loading = document.getElementById('loading');
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
-scene.fog = new THREE.Fog(0x87ceeb, 45, 130);
+scene.fog = new THREE.Fog(0x87ceeb, 55, 125);
 
 const camera = new THREE.PerspectiveCamera(
   65,
-  window.innerWidth / window.innerHeight,
+  innerWidth / innerHeight,
   0.1,
-  300
+  250
 );
 
 const renderer = new THREE.WebGLRenderer({
@@ -193,111 +213,97 @@ const renderer = new THREE.WebGLRenderer({
   powerPreference: 'low-power'
 });
 
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = false;
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 container.appendChild(renderer.domElement);
 
-// LIGHTING
+// ======================================
+// 2. LIGHTING AND MATERIALS
+// ======================================
 
-scene.add(new THREE.HemisphereLight(0xffffff, 0x65734b, 2));
+scene.add(new THREE.HemisphereLight(
+  0xffffff, 0x68734c, 2
+));
 
-const sunlight = new THREE.DirectionalLight(0xffffff, 2);
-sunlight.position.set(-20, 35, 15);
-scene.add(sunlight);
+const sun = new THREE.DirectionalLight(0xffffff, 1.8);
+sun.position.set(-20, 35, 20);
+scene.add(sun);
 
-// MATERIAL HELPER
-
-function material(color) {
+function mat(color) {
   return new THREE.MeshLambertMaterial({ color });
 }
 
-// BOX HELPER
-
-function box(name, x, y, z, w, h, d, color) {
-  const object = new THREE.Mesh(
+function block(x, y, z, w, h, d, color, parent = scene) {
+  const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(w, h, d),
-    material(color)
+    mat(color)
   );
 
-  object.name = name;
-  object.position.set(x, y, z);
-  scene.add(object);
-  return object;
+  mesh.position.set(x, y, z);
+  parent.add(mesh);
+  return mesh;
 }
 
-// GROUND
+// ======================================
+// 3. CITY GROUND AND ROADS
+// ======================================
 
-box('Grass', 0, -0.4, 0, 110, 0.8, 110, 0x55a64e);
+block(0, -0.45, 0, 110, 0.9, 110, 0x58a653);
 
-// ROADS
+block(0, 0.02, 0, 12, 0.08, 100, 0x42464b);
+block(0, 0.04, 0, 100, 0.08, 10, 0x42464b);
 
-box('Main Road', 0, 0.02, 0, 12, 0.08, 100, 0x454545);
-box('Cross Road', 0, 0.04, 0, 100, 0.08, 10, 0x454545);
-
-// ROAD MARKINGS
+block(-8, 0.12, 0, 3, 0.2, 100, 0xc7c7c7);
+block(8, 0.12, 0, 3, 0.2, 100, 0xc7c7c7);
 
 for (let z = -45; z <= 45; z += 9) {
-  box('Road Marking', 0, 0.09, z, 0.22, 0.03, 4, 0xffffff);
+  block(0, 0.09, z, 0.2, 0.025, 4, 0xffffff);
 }
 
 for (let x = -45; x <= 45; x += 9) {
-  box('Road Marking', x, 0.10, 0, 4, 0.03, 0.22, 0xffffff);
+  block(x, 0.1, 0, 4, 0.025, 0.2, 0xffffff);
 }
 
-// SIDEWALKS
+// ======================================
+// 4. HOUSES AND SHOPS
+// ======================================
 
-box('Left Pavement', -8, 0.12, 0, 3, 0.25, 100, 0xbdbdbd);
-box('Right Pavement', 8, 0.12, 0, 3, 0.25, 100, 0xbdbdbd);
+function building(x, z, color, name) {
+  const height = 5;
 
-// BUILDINGS
+  block(x, height / 2, z, 7, height, 7, color);
 
-function building(x, z, color, label, width = 7, depth = 7) {
-  const height = 4 + Math.random() * 3;
+  block(x, height + 0.15, z, 7.4, 0.3, 7.4, 0x53483e);
 
-  box(label, x, height / 2, z, width, height, depth, color);
+  block(x, 1.1, z + 3.54, 1.2, 2.1, 0.1, 0x65351d);
 
-  // Roof
-  box('Roof', x, height + 0.15, z,
-      width + 0.4, 0.3, depth + 0.4, 0x51483e);
+  block(x - 1.8, 3.1, z + 3.56, 1.2, 1, 0.1, 0x9ce8ff);
+  block(x + 1.8, 3.1, z + 3.56, 1.2, 1, 0.1, 0x9ce8ff);
 
-  // Door facing the road
-  box('Door', x, 1.15, z + depth / 2 + 0.035,
-      1.2, 2.2, 0.08, 0x65351d);
-
-  // Front windows
-  box('Window', x - 1.8, height * 0.65, z + depth / 2 + 0.05,
-      1.2, 1, 0.08, 0x9ce8ff);
-
-  box('Window', x + 1.8, height * 0.65, z + depth / 2 + 0.05,
-      1.2, 1, 0.08, 0x9ce8ff);
-
-  // Signboard
-  const sign = box('Signboard', x, height + 0.65,
-      z + depth / 2 + 0.1, width * 0.85, 0.65, 0.15, 0xffcf33);
-
-  return sign;
+  block(x, 5.7, z + 3.8, 5, 0.6, 0.15, 0xffcf33);
 }
 
-building(-17, -18, 0xffa64d, 'Mama Titi Shop');
-building(17, -18, 0xf4e3a1, 'City Apartments');
-building(-19, 0, 0xe56b6f, 'Fresh Mart');
-building(19, 0, 0x80c9a9, 'Dream House');
-building(-18, 20, 0xa8a1ed, 'Fashion House');
-building(18, 20, 0xffb4d1, 'City Hotel');
-building(-30, -30, 0xe8d3a8, 'Family Home');
-building(30, -30, 0x9ed4ef, 'Modern Home');
-building(-30, 30, 0xf5a35c, 'Corner Shop');
-building(30, 30, 0xc3e3a5, 'Green Apartments');
+building(-17, -18, 0xffa64d, 'SHOP');
+building(17, -18, 0xf2e1a1, 'APARTMENTS');
+building(-19, 0, 0xe56b6f, 'FRESH MART');
+building(19, 0, 0x80c9a9, 'DREAM HOUSE');
+building(-18, 20, 0xa8a1ed, 'FASHION');
+building(18, 20, 0xffb4d1, 'CITY HOTEL');
+building(-30, -30, 0xe8d3a8, 'HOME');
+building(30, -30, 0x9ed4ef, 'HOME');
+building(-30, 30, 0xf5a35c, 'SHOP');
+building(30, 30, 0xc3e3a5, 'HOME');
 
-// TREES
+// ======================================
+// 5. TREES
+// ======================================
 
 function tree(x, z) {
   const trunk = new THREE.Mesh(
     new THREE.CylinderGeometry(0.25, 0.35, 2, 6),
-    material(0x79502c)
+    mat(0x79502c)
   );
 
   trunk.position.set(x, 1, z);
@@ -305,37 +311,37 @@ function tree(x, z) {
 
   const leaves = new THREE.Mesh(
     new THREE.SphereGeometry(1.5, 7, 6),
-    material(0x238a45)
+    mat(0x238a45)
   );
 
-  leaves.position.set(x, 2.8, z);
+  leaves.position.set(x, 2.7, z);
   scene.add(leaves);
 }
 
-for (let i = -40; i <= 40; i += 10) {
-  tree(-11, i);
-  tree(11, i);
+for (let z = -40; z <= 40; z += 10) {
+  tree(-11, z);
+  tree(11, z);
 }
 
-// PLAYER
+// ======================================
+// 6. PLAYER CHARACTER
+// ======================================
 
 const player = new THREE.Group();
 scene.add(player);
 
-const skin = material(0x8d5524);
-const shirt = material(0x1675d1);
-const trousers = material(0x292c45);
-const shoes = material(0x222222);
+const skin = mat(0x8d5524);
+const shirt = mat(0x1675d1);
+const trousers = mat(0x292c45);
+const black = mat(0x222222);
 
-// Body
-const body = new THREE.Mesh(
+const torso = new THREE.Mesh(
   new THREE.BoxGeometry(0.8, 1.1, 0.45),
   shirt
 );
-body.position.y = 1.65;
-player.add(body);
+torso.position.y = 1.65;
+player.add(torso);
 
-// Head
 const head = new THREE.Mesh(
   new THREE.SphereGeometry(0.36, 10, 8),
   skin
@@ -343,17 +349,16 @@ const head = new THREE.Mesh(
 head.position.y = 2.45;
 player.add(head);
 
-// Hair
 const hair = new THREE.Mesh(
   new THREE.SphereGeometry(0.37, 10, 6),
-  material(0x211711)
+  black
 );
-hair.position.y = 2.63;
+hair.position.y = 2.62;
 hair.scale.y = 0.55;
 player.add(hair);
 
-// Arms
 const arms = [];
+const legs = [];
 
 for (const side of [-1, 1]) {
   const arm = new THREE.Mesh(
@@ -361,15 +366,10 @@ for (const side of [-1, 1]) {
     skin
   );
 
-  arm.position.set(side * 0.53, 1.68, 0);
+  arm.position.set(side * 0.53, 1.65, 0);
   player.add(arm);
   arms.push(arm);
-}
 
-// Legs
-const legs = [];
-
-for (const side of [-1, 1]) {
   const leg = new THREE.Mesh(
     new THREE.BoxGeometry(0.3, 0.75, 0.35),
     trousers
@@ -381,7 +381,7 @@ for (const side of [-1, 1]) {
 
   const shoe = new THREE.Mesh(
     new THREE.BoxGeometry(0.32, 0.18, 0.5),
-    shoes
+    black
   );
 
   shoe.position.set(side * 0.22, 0.2, -0.07);
@@ -390,7 +390,97 @@ for (const side of [-1, 1]) {
 
 player.position.set(0, 0, 5);
 
-// CONTROLS
+// ======================================
+// 7. CREATE CARS
+// ======================================
+
+function createCar(color, x, z) {
+  const group = new THREE.Group();
+  const wheels = [];
+
+  block(0, 0, 0, 1, 1, 1, color, group);
+
+  // Body
+  block(0, 0.75, 0, 2.2, 0.65, 3.8, color, group);
+
+  // Windows and cabin
+  block(0, 1.4, -0.15, 1.65, 0.8, 1.9, 0x9ee8ff, group);
+
+  // Bumpers
+  block(0, 0.45, 1.95, 2.25, 0.2, 0.2, 0x333333, group);
+  block(0, 0.45, -1.95, 2.25, 0.2, 0.2, 0x333333, group);
+
+  for (const side of [-1, 1]) {
+    for (const end of [-1, 1]) {
+      const wheel = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.42, 0.42, 0.28, 10),
+        mat(0x222222)
+      );
+
+      wheel.rotation.z = Math.PI / 2;
+      wheel.position.set(side * 1.12, 0.43, end * 1.25);
+
+      group.add(wheel);
+      wheels.push(wheel);
+    }
+  }
+
+  for (const side of [-1, 1]) {
+    block(side * 0.7, 0.85, 1.94, 0.45, 0.2, 0.08, 0xffff99, group);
+    block(side * 0.7, 0.85, -1.94, 0.45, 0.2, 0.08, 0xff3333, group);
+  }
+
+  group.position.set(x, 0, z);
+  scene.add(group);
+
+  return { group, wheels, type: 'car', speed: 10 };
+}
+
+// ======================================
+// 8. CREATE MOTORCYCLE
+// ======================================
+
+function createBike(x, z) {
+  const group = new THREE.Group();
+  const wheels = [];
+
+  block(0, 0.8, 0, 0.45, 0.45, 1.5, 0xffcf33, group);
+
+  for (const end of [-1, 1]) {
+    const wheel = new THREE.Mesh(
+      new THREE.TorusGeometry(0.36, 0.09, 6, 12),
+      mat(0x222222)
+    );
+
+    wheel.position.set(0, 0.38, end * 0.65);
+    group.add(wheel);
+    wheels.push(wheel);
+  }
+
+  block(0, 1.15, -0.1, 0.48, 0.16, 0.55, 0x333333, group);
+  block(0, 1.25, 0.65, 1, 0.1, 0.1, 0x444444, group);
+
+  group.position.set(x, 0, z);
+  scene.add(group);
+
+  return { group, wheels, type: 'motorcycle', speed: 14 };
+}
+
+const car = createCar(0xe53935, 0, -8);
+const blueCar = createCar(0x2678e8, 0, -24);
+const bike = createBike(3, 5);
+
+const vehicles = [car, blueCar, bike];
+
+let driving = false;
+let activeVehicle = null;
+
+// ======================================
+// 9. JOYSTICK
+// ======================================
+
+const joystick = document.getElementById('joystick');
+const stick = document.getElementById('stick');
 
 const input = {
   x: 0,
@@ -398,26 +488,20 @@ const input = {
   running: false
 };
 
-const joystick = document.getElementById('joystick');
-const stick = document.getElementById('stick');
-
-let pointerId = null;
+let joystickPointer = null;
 
 function moveStick(event) {
   const rect = joystick.getBoundingClientRect();
 
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-
-  let dx = event.clientX - centerX;
-  let dy = event.clientY - centerY;
+  let dx = event.clientX - (rect.left + rect.width / 2);
+  let dy = event.clientY - (rect.top + rect.height / 2);
 
   const max = 37;
-  const length = Math.hypot(dx, dy);
+  const distance = Math.hypot(dx, dy);
 
-  if (length > max) {
-    dx = dx / length * max;
-    dy = dy / length * max;
+  if (distance > max) {
+    dx = dx / distance * max;
+    dy = dy / distance * max;
   }
 
   stick.style.left = (35 + dx) + 'px';
@@ -428,21 +512,21 @@ function moveStick(event) {
 }
 
 joystick.addEventListener('pointerdown', event => {
-  pointerId = event.pointerId;
-  joystick.setPointerCapture(pointerId);
+  joystickPointer = event.pointerId;
+  joystick.setPointerCapture(event.pointerId);
   moveStick(event);
 });
 
 joystick.addEventListener('pointermove', event => {
-  if (event.pointerId === pointerId) {
+  if (event.pointerId === joystickPointer) {
     moveStick(event);
   }
 });
 
-function releaseStick(event) {
-  if (event.pointerId !== pointerId) return;
+function releaseJoystick(event) {
+  if (event.pointerId !== joystickPointer) return;
 
-  pointerId = null;
+  joystickPointer = null;
   input.x = 0;
   input.y = 0;
 
@@ -450,10 +534,12 @@ function releaseStick(event) {
   stick.style.top = '35px';
 }
 
-joystick.addEventListener('pointerup', releaseStick);
-joystick.addEventListener('pointercancel', releaseStick);
+joystick.addEventListener('pointerup', releaseJoystick);
+joystick.addEventListener('pointercancel', releaseJoystick);
 
-// RUN BUTTON
+// ======================================
+// 10. RUN AND JUMP
+// ======================================
 
 const runButton = document.getElementById('runButton');
 
@@ -461,43 +547,80 @@ runButton.addEventListener('pointerdown', () => {
   input.running = true;
 });
 
-function stopRunning() {
+function stopRun() {
   input.running = false;
 }
 
-runButton.addEventListener('pointerup', stopRunning);
-runButton.addEventListener('pointercancel', stopRunning);
-runButton.addEventListener('pointerleave', stopRunning);
-
-// JUMP
+runButton.addEventListener('pointerup', stopRun);
+runButton.addEventListener('pointercancel', stopRun);
+runButton.addEventListener('pointerleave', stopRun);
 
 let jumpVelocity = 0;
 let onGround = true;
 
 document.getElementById('jumpButton').addEventListener('pointerdown', () => {
-  if (onGround) {
+  if (!driving && onGround) {
     jumpVelocity = 6;
     onGround = false;
   }
 });
 
-// KEYBOARD SUPPORT
+// ======================================
+// 11. ENTER AND EXIT VEHICLES
+// ======================================
 
-const keys = {};
+const vehicleButton = document.getElementById('vehicleButton');
+const message = document.getElementById('message');
 
-window.addEventListener('keydown', event => {
-  keys[event.key.toLowerCase()] = true;
+function nearestVehicle() {
+  let closest = null;
+  let distance = Infinity;
 
-  if (event.key.toLowerCase() === 'c') {
-    toggleCamera();
+  for (const vehicle of vehicles) {
+    const d = player.position.distanceTo(vehicle.group.position);
+
+    if (d < distance) {
+      distance = d;
+      closest = vehicle;
+    }
+  }
+
+  return { vehicle: closest, distance };
+}
+
+vehicleButton.addEventListener('click', () => {
+  if (!driving) {
+    const result = nearestVehicle();
+
+    if (result.distance > 4.5) {
+      message.textContent = 'Walk closer to a car or motorcycle!';
+      return;
+    }
+
+    activeVehicle = result.vehicle;
+    driving = true;
+
+    player.visible = false;
+    vehicleButton.textContent = '🚶 EXIT VEHICLE';
+
+    message.textContent = 'Use the joystick to drive!';
+  } else {
+    driving = false;
+    player.visible = true;
+
+    player.position.x = activeVehicle.group.position.x + 2.5;
+    player.position.z = activeVehicle.group.position.z;
+
+    activeVehicle = null;
+
+    vehicleButton.textContent = '🚗 ENTER VEHICLE';
+    message.textContent = 'You have left the vehicle.';
   }
 });
 
-window.addEventListener('keyup', event => {
-  keys[event.key.toLowerCase()] = false;
-});
-
-// CAMERA
+// ======================================
+// 12. CAMERA SWITCH
+// ======================================
 
 let firstPerson = false;
 
@@ -510,7 +633,84 @@ function toggleCamera() {
 
 document.getElementById('cameraButton').addEventListener('click', toggleCamera);
 
-// GAME LOOP
+// ======================================
+// 13. KEYBOARD SUPPORT
+// ======================================
+
+const keys = {};
+
+window.addEventListener('keydown', event => {
+  keys[event.key.toLowerCase()] = true;
+
+  if (event.key.toLowerCase() === 'c') {
+    toggleCamera();
+  }
+
+  if (event.key.toLowerCase() === 'e') {
+    vehicleButton.click();
+  }
+
+  if (event.key === ' ') {
+    if (!driving && onGround) {
+      jumpVelocity = 6;
+      onGround = false;
+    }
+  }
+});
+
+window.addEventListener('keyup', event => {
+  keys[event.key.toLowerCase()] = false;
+});
+
+// ======================================
+// 14. LOCAL SAVE SYSTEM
+// ======================================
+
+function saveGame() {
+  try {
+    const data = {
+      x: player.position.x,
+      z: player.position.z,
+      camera: firstPerson
+    };
+
+    localStorage.setItem('naijaLifeSave', JSON.stringify(data));
+
+    message.textContent = 'Your position has been saved!';
+  } catch (error) {
+    message.textContent = 'Saving is unavailable in this browser.';
+  }
+}
+
+function loadGame() {
+  try {
+    const saved = localStorage.getItem('naijaLifeSave');
+
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+
+    if (Number.isFinite(data.x) && Number.isFinite(data.z)) {
+      player.position.x = THREE.MathUtils.clamp(data.x, -45, 45);
+      player.position.z = THREE.MathUtils.clamp(data.z, -45, 45);
+    }
+
+    firstPerson = Boolean(data.camera);
+
+    document.getElementById('cameraButton').textContent =
+      firstPerson ? '📷 THIRD PERSON' : '📷 FIRST PERSON';
+  } catch (error) {
+    console.log('No saved game was loaded.');
+  }
+}
+
+document.getElementById('saveButton').addEventListener('click', saveGame);
+
+loadGame();
+
+// ======================================
+// 15. GAME LOOP
+// ======================================
 
 const clock = new THREE.Clock();
 let walkTime = 0;
@@ -528,101 +728,139 @@ function animate() {
   if (keys['w'] || keys['arrowup']) moveZ = -1;
   if (keys['s'] || keys['arrowdown']) moveZ = 1;
 
-  const moving = Math.abs(moveX) > 0.08 || Math.abs(moveZ) > 0.08;
+  const moving =
+    Math.abs(moveX) > 0.08 ||
+    Math.abs(moveZ) > 0.08;
 
-  if (moving) {
-    const speed = input.running ? 9 : 5;
+  if (driving && activeVehicle) {
+    if (moving) {
+      const speed = activeVehicle.speed * (input.running ? 1.5 : 1);
+      const length = Math.hypot(moveX, moveZ) || 1;
 
-    const directionLength = Math.hypot(moveX, moveZ) || 1;
+      const dx = moveX / length;
+      const dz = moveZ / length;
 
-    const dx = moveX / directionLength;
-    const dz = moveZ / directionLength;
+      activeVehicle.group.position.x += dx * speed * delta;
+      activeVehicle.group.position.z += dz * speed * delta;
 
-    player.position.x += dx * speed * delta;
-    player.position.z += dz * speed * delta;
+      activeVehicle.group.rotation.y = Math.atan2(dx, dz);
 
-    player.rotation.y = Math.atan2(dx, dz);
+      activeVehicle.wheels.forEach(wheel => {
+        wheel.rotation.x += speed * delta;
+      });
+    }
 
-    walkTime += delta * (input.running ? 15 : 9);
+    activeVehicle.group.position.x =
+      THREE.MathUtils.clamp(activeVehicle.group.position.x, -45, 45);
 
-    legs[0].rotation.x = Math.sin(walkTime) * 0.55;
-    legs[1].rotation.x = -Math.sin(walkTime) * 0.55;
-    arms[0].rotation.x = -Math.sin(walkTime) * 0.35;
-    arms[1].rotation.x = Math.sin(walkTime) * 0.35;
+    activeVehicle.group.position.z =
+      THREE.MathUtils.clamp(activeVehicle.group.position.z, -45, 45);
+
   } else {
-    legs.forEach(leg => leg.rotation.x = 0);
-    arms.forEach(arm => arm.rotation.x = 0);
-  }
+    if (moving) {
+      const speed = input.running ? 9 : 5;
+      const length = Math.hypot(moveX, moveZ) || 1;
 
-  // Keep player within the neighborhood
-  player.position.x = THREE.MathUtils.clamp(player.position.x, -45, 45);
-  player.position.z = THREE.MathUtils.clamp(player.position.z, -45, 45);
+      const dx = moveX / length;
+      const dz = moveZ / length;
 
-  // Jump
-  if (!onGround || jumpVelocity > 0) {
-    player.position.y += jumpVelocity * delta;
-    jumpVelocity -= 15 * delta;
+      player.position.x += dx * speed * delta;
+      player.position.z += dz * speed * delta;
 
-    if (player.position.y <= 0) {
-      player.position.y = 0;
-      jumpVelocity = 0;
-      onGround = true;
+      player.rotation.y = Math.atan2(dx, dz);
+
+      walkTime += delta * (input.running ? 15 : 9);
+
+      legs[0].rotation.x = Math.sin(walkTime) * 0.55;
+      legs[1].rotation.x = -Math.sin(walkTime) * 0.55;
+
+      arms[0].rotation.x = -Math.sin(walkTime) * 0.35;
+      arms[1].rotation.x = Math.sin(walkTime) * 0.35;
+    } else {
+      legs.forEach(leg => leg.rotation.x = 0);
+      arms.forEach(arm => arm.rotation.x = 0);
+    }
+
+    player.position.x =
+      THREE.MathUtils.clamp(player.position.x, -45, 45);
+
+    player.position.z =
+      THREE.MathUtils.clamp(player.position.z, -45, 45);
+
+    if (!onGround || jumpVelocity > 0) {
+      player.position.y += jumpVelocity * delta;
+      jumpVelocity -= 15 * delta;
+
+      if (player.position.y <= 0) {
+        player.position.y = 0;
+        jumpVelocity = 0;
+        onGround = true;
+      }
     }
   }
 
-  // Camera follows player
+  // Follow the character or the active vehicle
+  const actor = driving && activeVehicle
+    ? activeVehicle.group
+    : player;
+
   const target = new THREE.Vector3(
-    player.position.x,
-    player.position.y + 1.5,
-    player.position.z
+    actor.position.x,
+    actor.position.y + 1.5,
+    actor.position.z
   );
 
   if (firstPerson) {
     camera.position.set(
-      player.position.x,
-      player.position.y + 2.35,
-      player.position.z + 0.1
+      actor.position.x,
+      actor.position.y + (driving ? 2.2 : 2.4),
+      actor.position.z
     );
 
-    const forward = new THREE.Vector3(
-      Math.sin(player.rotation.y),
+    const direction = new THREE.Vector3(
+      Math.sin(actor.rotation.y),
       0,
-      Math.cos(player.rotation.y)
+      Math.cos(actor.rotation.y)
     );
 
     camera.lookAt(
-      camera.position.x + forward.x * 12,
+      camera.position.x + direction.x * 12,
       camera.position.y - 0.2,
-      camera.position.z + forward.z * 12
+      camera.position.z + direction.z * 12
     );
   } else {
-    const cameraOffset = new THREE.Vector3(
-      0,
-      5,
-      8
+    camera.position.set(
+      target.x,
+      target.y + (driving ? 4 : 5),
+      target.z + (driving ? 10 : 8)
     );
 
-    camera.position.copy(target).add(cameraOffset);
     camera.lookAt(target);
   }
 
   document.getElementById('status').textContent =
-    moving ? (input.running ? 'Running around' : 'Walking around')
-           : 'Exploring the city';
+    driving
+      ? 'Driving ' + activeVehicle.type
+      : moving
+        ? (input.running ? 'Running' : 'Walking')
+        : 'Exploring';
 
   renderer.render(scene, camera);
 }
 
+// ======================================
+// 16. SCREEN RESIZING AND STARTUP
+// ======================================
+
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(innerWidth, innerHeight);
 });
 
 animate();
-
 loading.style.display = 'none';
 
 </script>
 </body>
-</html>
+  </html>
