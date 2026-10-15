@@ -1361,7 +1361,7 @@ function exitVehicle() {
     if (isDriving) return;
 
     // Read joystick and keyboard movement
-    let moveX = -input.x;
+    let moveX = input.x;
     let moveZ = input.y;
 
     if (input.forward) moveZ -= 1;
